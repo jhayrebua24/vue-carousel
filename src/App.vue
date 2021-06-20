@@ -1,26 +1,60 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <swiper
+    :pagination="{ clickable: true }"
+    :space-between="50"
+    :breakpoints="{
+      640: {
+        slidesPerView: 2,
+      },
+      768: {
+        slidesPerView: 3,
+      },
+      1024: {
+        slidesPerView: 5,
+      },
+    }"
+  >
+    <swiper-slide v-for="val in list" :key="val.id"
+      ><SlideInfo :details="val"
+    /></swiper-slide>
+  </swiper>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SwiperCore, { Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import SlideInfo from "./components/Slide.vue";
+import "swiper/swiper-bundle.min.css";
+import sampleData from "./components/data";
 
+// install Swiper modules
+SwiperCore.use([Pagination]);
+
+// Import Swiper styles
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    Swiper,
+    SwiperSlide,
+    SlideInfo,
+  },
+  data: function() {
+    return {
+      list: sampleData,
+    };
+  },
+  methods: {
+    onSwiper(swiper) {
+      console.log(swiper);
+    },
+    onSlideChange() {
+      console.log("slide change");
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.swiper-slide {
+  width: auto !important;
 }
 </style>
